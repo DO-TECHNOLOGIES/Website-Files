@@ -19,8 +19,8 @@ const Index = () => {
     <ModeProvider>
       <div className="min-h-screen bg-background">
         {/* Version indicator */}
-        <div className="fixed top-0 right-0 bg-blue-500 text-white px-2 py-1 text-xs z-50">
-          v4.0 - Favicon Fix
+        <div className="fixed top-0 right-0 bg-green-500 text-white px-2 py-1 text-xs z-50">
+          v5.0 - Force Deploy
         </div>
         <Header />
         <Hero />
