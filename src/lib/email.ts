@@ -6,6 +6,7 @@ export type EmailPayload = {
   message: string;
   fromName?: string;
   replyTo?: string;
+  contact?: string;
 };
 
 const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string;
@@ -22,7 +23,8 @@ export async function sendEmail(payload: EmailPayload): Promise<void> {
     subject: payload.subject,
     message: payload.message,
     from_name: payload.fromName ?? 'Website',
-    reply_to: payload.replyTo ?? undefined,
+    reply_to: payload.replyTo ?? payload.toEmail,
+    contact: payload.contact ?? '',
   } as Record<string, unknown>;
 
   await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, {

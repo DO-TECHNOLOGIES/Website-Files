@@ -48,6 +48,7 @@ const DemoSection = () => {
         message: body,
         fromName: data.name,
         replyTo: data.email,
+        contact: data.contact,
       });
 
       setIsSubmitted(true);
@@ -70,6 +71,7 @@ const DemoSection = () => {
         message: body,
         fromName: data.name,
         replyTo: data.email,
+        contact: data.contact,
       });
 
       setIsSubmitted(true);

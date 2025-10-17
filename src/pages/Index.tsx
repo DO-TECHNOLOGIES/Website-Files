@@ -11,7 +11,6 @@ import Testimonials from '@/components/Testimonials';
 import DemoSection from '@/components/DemoSection';
 import Footer from '@/components/Footer';
 import ChatBot from '@/components/ChatBot';
-import EmailTest from '@/components/EmailTest';
 
 const Index = () => {
   return (
@@ -27,7 +26,6 @@ const Index = () => {
         <Testimonials />
         <DownloadApp />
         <DemoSection />
-        <EmailTest />
         <Footer />
         <ChatBot />
       </div>
