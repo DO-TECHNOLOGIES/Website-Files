@@ -14,15 +14,21 @@ const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_6kt3tkb';
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_wq78wkf';
 const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '3uKgx6C4kpHB3haPC';
 
-// Debug logging for production
-console.log('EmailJS Environment Variables:', {
-  SERVICE_ID: SERVICE_ID ? 'SET' : 'MISSING',
-  TEMPLATE_ID: TEMPLATE_ID ? 'SET' : 'MISSING', 
-  PUBLIC_KEY: PUBLIC_KEY ? 'SET' : 'MISSING',
-  NODE_ENV: import.meta.env.MODE
+// Enhanced debug logging for production
+console.log('EmailJS Configuration:', {
+  SERVICE_ID,
+  TEMPLATE_ID,
+  PUBLIC_KEY,
+  hasServiceId: !!SERVICE_ID,
+  hasTemplateId: !!TEMPLATE_ID,
+  hasPublicKey: !!PUBLIC_KEY,
+  NODE_ENV: import.meta.env.MODE,
+  isProduction: import.meta.env.MODE === 'production'
 });
 
 export async function sendEmail(payload: EmailPayload): Promise<void> {
+  console.log('sendEmail called with payload:', payload);
+  
   if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
     console.error('EmailJS Configuration Missing:', {
       SERVICE_ID: SERVICE_ID || 'MISSING',
