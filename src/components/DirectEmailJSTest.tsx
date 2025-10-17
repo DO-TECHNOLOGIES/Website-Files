@@ -25,7 +25,7 @@ const DirectEmailJSTest: React.FC = () => {
           reply_to: 'test@dojobs.sg',
           contact: '+65 9123 4567',
         },
-        '3uKgx6C4kpHB3haPC'  // Public Key
+        'a54e0f1OPqex41b4h'  // Public Key - Updated
       );
 
       console.log('Direct EmailJS Result:', result);

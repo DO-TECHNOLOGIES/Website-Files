@@ -12,7 +12,7 @@ export type EmailPayload = {
 // Temporary hardcoded values for testing
 const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_6kt3tkb';
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_wq78wkf';
-const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '3uKgx6C4kpHB3haPC';
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'a54e0f1OPqex41b4h';
 
 // Enhanced debug logging for production
 console.log('EmailJS Configuration:', {
