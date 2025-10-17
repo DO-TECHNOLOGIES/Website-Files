@@ -13,10 +13,10 @@ const DirectEmailJSTest: React.FC = () => {
       // Import EmailJS directly
       const emailjs = await import('@emailjs/browser');
       
-      // Use environment variables
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      // Use environment variables with fallbacks for local development
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_6kt3tkb';
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_wq78wkf';
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'a54e0f1OPqex41b4h';
       
       console.log('Direct EmailJS using env vars:', { serviceId, templateId, publicKey });
       
