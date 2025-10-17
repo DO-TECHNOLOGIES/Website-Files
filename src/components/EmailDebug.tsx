@@ -12,7 +12,7 @@ const EmailDebug: React.FC = () => {
       console.log('Testing EmailJS on production...');
       
       await sendEmail({
-        toEmail: 'connect@dojobs.sg',
+        toEmail: 'keerthanadev808@gmail.com', // Changed to your email
         subject: 'Test Email from Production Site',
         message: 'This is a test email from the live production site to verify EmailJS is working.',
         fromName: 'DO Jobs Production Test',
