@@ -13,10 +13,16 @@ const DirectEmailJSTest: React.FC = () => {
       // Import EmailJS directly
       const emailjs = await import('@emailjs/browser');
       
-      // Use the exact same values as dashboard test
+      // Use environment variables
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      
+      console.log('Direct EmailJS using env vars:', { serviceId, templateId, publicKey });
+      
       const result = await emailjs.default.send(
-        'service_6kt3tkb',  // Service ID
-        'template_wq78wkf', // Template ID
+        serviceId,  // Service ID from env
+        templateId, // Template ID from env
         {
           to_email: 'connect@dojobs.sg',
           subject: 'Direct Test from Website',
@@ -25,7 +31,7 @@ const DirectEmailJSTest: React.FC = () => {
           reply_to: 'test@dojobs.sg',
           contact: '+65 9123 4567',
         },
-        'a54e0f1OPqex41b4h'  // Public Key - Updated
+        publicKey  // Public Key from env
       );
 
       console.log('Direct EmailJS Result:', result);
