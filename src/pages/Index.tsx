@@ -12,6 +12,7 @@ import DemoSection from '@/components/DemoSection';
 import Footer from '@/components/Footer';
 import ChatBot from '@/components/ChatBot';
 import EmailDebug from '@/components/EmailDebug';
+import DirectEmailJSTest from '@/components/DirectEmailJSTest';
 
 const Index = () => {
   return (
@@ -32,6 +33,7 @@ const Index = () => {
         <DownloadApp />
         <DemoSection />
         <EmailDebug />
+        <DirectEmailJSTest />
         <Footer />
         <ChatBot />
       </div>
