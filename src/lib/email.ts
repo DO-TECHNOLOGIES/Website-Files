@@ -10,9 +10,9 @@ export type EmailPayload = {
 };
 
 // Use environment variables (set in Vercel dashboard) with fallbacks for local development
-const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_6kt3tkb';
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_w463glo';
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_wq78wkf';
-const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'a54e0f1OPqex41b4h';
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '8dgskOsRtAKgk8HD0';
 
 // Enhanced debug logging for production
 console.log('EmailJS Configuration:', {

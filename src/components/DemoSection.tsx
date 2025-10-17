@@ -43,7 +43,7 @@ const DemoSection = () => {
       const subject = 'DO CONNECT - Free Demo Request';
       const body = `Name: ${data.name}\nContact: ${data.contact}\nEmail: ${data.email}\nCompany: ${data.companyName ?? ''}`;
       await sendEmail({
-        toEmail: 'connect@dojobs.sg',
+        toEmail: 'hr@dojobs.sg',
         subject,
         message: body,
         fromName: data.name,
@@ -57,7 +57,7 @@ const DemoSection = () => {
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
       console.error(error);
-      toast.error('Could not send right now. Please email connect@dojobs.sg.');
+      toast.error('Could not send right now. Please email hr@dojobs.sg.');
     }
   };
 
@@ -66,7 +66,7 @@ const DemoSection = () => {
       const subject = 'General Enquiry';
       const body = `Name: ${data.name}\nContact: ${data.contact}\nEmail: ${data.email}`;
       await sendEmail({
-        toEmail: 'connect@dojobs.sg',
+        toEmail: 'hr@dojobs.sg',
         subject,
         message: body,
         fromName: data.name,
@@ -80,7 +80,7 @@ const DemoSection = () => {
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
       console.error(error);
-      toast.error('Could not send right now. Please email connect@dojobs.sg.');
+      toast.error('Could not send right now. Please email hr@dojobs.sg.');
     }
   };
 

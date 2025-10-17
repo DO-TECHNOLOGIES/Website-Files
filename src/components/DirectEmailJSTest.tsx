@@ -14,9 +14,9 @@ const DirectEmailJSTest: React.FC = () => {
       const emailjs = await import('@emailjs/browser');
       
       // Use environment variables with fallbacks for local development
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_6kt3tkb';
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_w463glo';
       const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_wq78wkf';
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'a54e0f1OPqex41b4h';
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '8dgskOsRtAKgk8HD0';
       
       console.log('Direct EmailJS using env vars:', { serviceId, templateId, publicKey });
       
@@ -24,7 +24,7 @@ const DirectEmailJSTest: React.FC = () => {
         serviceId,  // Service ID from env
         templateId, // Template ID from env
         {
-          to_email: 'connect@dojobs.sg',
+          to_email: 'hr@dojobs.sg',
           subject: 'Direct Test from Website',
           message: 'This is a direct EmailJS test from the website, bypassing our wrapper.',
           from_name: 'Website Direct Test',
