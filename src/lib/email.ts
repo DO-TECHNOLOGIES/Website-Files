@@ -23,7 +23,9 @@ console.log('EmailJS Configuration:', {
   hasTemplateId: !!TEMPLATE_ID,
   hasPublicKey: !!PUBLIC_KEY,
   NODE_ENV: import.meta.env.MODE,
-  isProduction: import.meta.env.MODE === 'production'
+  isProduction: import.meta.env.MODE === 'production',
+  PUBLIC_KEY_LENGTH: PUBLIC_KEY?.length,
+  PUBLIC_KEY_START: PUBLIC_KEY?.substring(0, 5)
 });
 
 export async function sendEmail(payload: EmailPayload): Promise<void> {
