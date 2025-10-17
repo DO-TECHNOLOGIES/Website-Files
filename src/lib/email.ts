@@ -13,8 +13,21 @@ const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string;
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string;
 const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string;
 
+// Debug logging for production
+console.log('EmailJS Environment Variables:', {
+  SERVICE_ID: SERVICE_ID ? 'SET' : 'MISSING',
+  TEMPLATE_ID: TEMPLATE_ID ? 'SET' : 'MISSING', 
+  PUBLIC_KEY: PUBLIC_KEY ? 'SET' : 'MISSING',
+  NODE_ENV: import.meta.env.MODE
+});
+
 export async function sendEmail(payload: EmailPayload): Promise<void> {
   if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+    console.error('EmailJS Configuration Missing:', {
+      SERVICE_ID: SERVICE_ID || 'MISSING',
+      TEMPLATE_ID: TEMPLATE_ID || 'MISSING',
+      PUBLIC_KEY: PUBLIC_KEY || 'MISSING'
+    });
     throw new Error('EmailJS is not configured.');
   }
 
