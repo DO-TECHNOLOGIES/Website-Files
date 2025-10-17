@@ -19,8 +19,8 @@ const Index = () => {
     <ModeProvider>
       <div className="min-h-screen bg-background">
         {/* Force deployment indicator */}
-        <div className="fixed top-0 right-0 bg-red-500 text-white px-2 py-1 text-xs z-50">
-          v8.0 - API KEY FIX
+        <div className="fixed top-0 right-0 bg-green-500 text-white px-2 py-1 text-xs z-50">
+          v9.0 - NEW SERVICE
         </div>
         <Header />
         <Hero />
