@@ -2,85 +2,72 @@ import { useMode } from '@/contexts/ModeContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ArrowRight, Play, CheckCircle } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { ArrowRight, CheckCircle } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { sendEmail } from '@/lib/email';
-
-const demoFormSchema = z.object({
-  name: z.string().trim().min(1, { message: "Name is required" }).max(100, { message: "Name must be less than 100 characters" }),
-  contact: z.string().trim().min(1, { message: "Contact number is required" }).max(20, { message: "Contact must be less than 20 characters" }),
-  email: z.string().trim().email({ message: "Invalid email address" }).max(255, { message: "Email must be less than 255 characters" }),
-  companyName: z.string().trim().max(100, { message: "Company name must be less than 100 characters" }).optional(),
-});
-
-const contactFormSchema = z.object({
-  name: z.string().trim().min(1, { message: "Name is required" }).max(100, { message: "Name must be less than 100 characters" }),
-  contact: z.string().trim().min(1, { message: "Contact number is required" }).max(20, { message: "Contact must be less than 20 characters" }),
-  email: z.string().trim().email({ message: "Invalid email address" }).max(255, { message: "Email must be less than 255 characters" }),
-});
-
-type DemoFormData = z.infer<typeof demoFormSchema>;
-type ContactFormData = z.infer<typeof contactFormSchema>;
+import { sendEmail, EmailData } from '@/lib/emailjs';
 
 const DemoSection = () => {
   const { mode } = useMode();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const demoForm = useForm<DemoFormData>({
-    resolver: zodResolver(demoFormSchema),
-  });
+  const handleDemoSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
-  const contactForm = useForm<ContactFormData>({
-    resolver: zodResolver(contactFormSchema),
-  });
+    const formData = new FormData(e.currentTarget);
+    const emailData: EmailData = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      contact: formData.get('contact') as string,
+      company: formData.get('company') as string,
+      formType: 'demo',
+      toEmail: 'hr@dojobs.sg',
+    };
 
-  const onDemoSubmit = async (data: DemoFormData) => {
     try {
-      const subject = 'DO CONNECT - Free Demo Request';
-      const body = `Name: ${data.name}\nContact: ${data.contact}\nEmail: ${data.email}\nCompany: ${data.companyName ?? ''}`;
-      await sendEmail({
-        toEmail: 'hr@dojobs.sg',
-        subject,
-        message: body,
-        fromName: data.name,
-        replyTo: data.email,
-        contact: data.contact,
-      });
-
+      await sendEmail(emailData);
       setIsSubmitted(true);
-      toast.success('Thanks! Your demo request was sent.');
-      demoForm.reset();
+      toast.success('Thanks! Your demo request was sent successfully.');
+      if (e.currentTarget) {
+        e.currentTarget.reset();
+      }
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
-      console.error(error);
-      toast.error('Could not send right now. Please email hr@dojobs.sg.');
+      console.error('Demo request failed:', error);
+      toast.error('Could not send your request right now. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const onContactSubmit = async (data: ContactFormData) => {
-    try {
-      const subject = 'General Enquiry';
-      const body = `Name: ${data.name}\nContact: ${data.contact}\nEmail: ${data.email}`;
-      await sendEmail({
-        toEmail: 'hr@dojobs.sg',
-        subject,
-        message: body,
-        fromName: data.name,
-        replyTo: data.email,
-        contact: data.contact,
-      });
+  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
+    const formData = new FormData(e.currentTarget);
+    const emailData: EmailData = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      contact: formData.get('contact') as string,
+      formType: 'contact',
+      toEmail: 'hr@dojobs.sg',
+    };
+
+    try {
+      await sendEmail(emailData);
       setIsSubmitted(true);
-      toast.success('Thanks! Your message was sent.');
-      contactForm.reset();
+      toast.success('Thanks! Your message was sent successfully.');
+      if (e.currentTarget) {
+        e.currentTarget.reset();
+      }
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (error) {
-      console.error(error);
-      toast.error('Could not send right now. Please email hr@dojobs.sg.');
+      console.error('Contact form failed:', error);
+      toast.error('Could not send your message right now. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -109,7 +96,10 @@ const DemoSection = () => {
                 </p>
               </div>
             ) : (
-              <form onSubmit={contactForm.handleSubmit(onContactSubmit)} className="bg-card rounded-2xl p-6 sm:p-8 shadow-large animate-fade-in">
+              <form 
+                onSubmit={handleContactSubmit}
+                className="bg-card rounded-2xl p-6 sm:p-8 shadow-large animate-fade-in"
+              >
                 <div className="space-y-6">
                   <div>
                     <Label htmlFor="staff-name" className="text-base font-medium">
@@ -117,15 +107,12 @@ const DemoSection = () => {
                     </Label>
                     <Input
                       id="staff-name"
+                      name="name"
                       type="text"
                       placeholder="Your name"
                       className="mt-2 h-12"
-                      {...contactForm.register('name')}
-                      aria-invalid={contactForm.formState.errors.name ? 'true' : 'false'}
+                      required
                     />
-                    {contactForm.formState.errors.name && (
-                      <p className="text-sm text-destructive mt-1">{contactForm.formState.errors.name.message}</p>
-                    )}
                   </div>
 
                   <div>
@@ -134,15 +121,12 @@ const DemoSection = () => {
                     </Label>
                     <Input
                       id="staff-contact"
+                      name="contact"
                       type="tel"
                       placeholder="+65 9123 4567"
                       className="mt-2 h-12"
-                      {...contactForm.register('contact')}
-                      aria-invalid={contactForm.formState.errors.contact ? 'true' : 'false'}
+                      required
                     />
-                    {contactForm.formState.errors.contact && (
-                      <p className="text-sm text-destructive mt-1">{contactForm.formState.errors.contact.message}</p>
-                    )}
                   </div>
 
                   <div>
@@ -151,24 +135,22 @@ const DemoSection = () => {
                     </Label>
                     <Input
                       id="staff-email"
+                      name="email"
                       type="email"
                       placeholder="your.email@example.com"
                       className="mt-2 h-12"
-                      {...contactForm.register('email')}
-                      aria-invalid={contactForm.formState.errors.email ? 'true' : 'false'}
+                      required
                     />
-                    {contactForm.formState.errors.email && (
-                      <p className="text-sm text-destructive mt-1">{contactForm.formState.errors.email.message}</p>
-                    )}
                   </div>
+
 
                   <Button
                     type="submit"
                     size="lg"
-                    disabled={contactForm.formState.isSubmitting}
+                    disabled={isSubmitting}
                     className="w-full bg-staff hover:bg-staff-dark text-white rounded-xl px-8 py-6 text-lg shadow-medium"
                   >
-                    {contactForm.formState.isSubmitting ? 'Sending...' : 'Get in Touch'}
+                    {isSubmitting ? 'Sending...' : 'Get in Touch'}
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
@@ -204,7 +186,10 @@ const DemoSection = () => {
               </p>
             </div>
           ) : (
-            <form onSubmit={demoForm.handleSubmit(onDemoSubmit)} className="bg-card rounded-2xl p-6 sm:p-8 shadow-large animate-fade-in">
+            <form 
+              onSubmit={handleDemoSubmit}
+              className="bg-card rounded-2xl p-6 sm:p-8 shadow-large animate-fade-in"
+            >
               <div className="space-y-6">
                 <div>
                   <Label htmlFor="business-name" className="text-base font-medium">
@@ -212,15 +197,12 @@ const DemoSection = () => {
                   </Label>
                   <Input
                     id="business-name"
+                    name="name"
                     type="text"
                     placeholder="John Doe"
                     className="mt-2 h-12"
-                    {...demoForm.register('name')}
-                    aria-invalid={demoForm.formState.errors.name ? 'true' : 'false'}
+                    required
                   />
-                  {demoForm.formState.errors.name && (
-                    <p className="text-sm text-destructive mt-1">{demoForm.formState.errors.name.message}</p>
-                  )}
                 </div>
 
                 <div>
@@ -229,15 +211,12 @@ const DemoSection = () => {
                   </Label>
                   <Input
                     id="business-contact"
+                    name="contact"
                     type="tel"
                     placeholder="+65 9123 4567"
                     className="mt-2 h-12"
-                    {...demoForm.register('contact')}
-                    aria-invalid={demoForm.formState.errors.contact ? 'true' : 'false'}
+                    required
                   />
-                  {demoForm.formState.errors.contact && (
-                    <p className="text-sm text-destructive mt-1">{demoForm.formState.errors.contact.message}</p>
-                  )}
                 </div>
 
                 <div>
@@ -246,15 +225,12 @@ const DemoSection = () => {
                   </Label>
                   <Input
                     id="business-email"
+                    name="email"
                     type="email"
                     placeholder="john@company.com"
                     className="mt-2 h-12"
-                    {...demoForm.register('email')}
-                    aria-invalid={demoForm.formState.errors.email ? 'true' : 'false'}
+                    required
                   />
-                  {demoForm.formState.errors.email && (
-                    <p className="text-sm text-destructive mt-1">{demoForm.formState.errors.email.message}</p>
-                  )}
                 </div>
 
                 <div>
@@ -263,24 +239,21 @@ const DemoSection = () => {
                   </Label>
                   <Input
                     id="business-companyName"
+                    name="company"
                     type="text"
                     placeholder="Your Company"
                     className="mt-2 h-12"
-                    {...demoForm.register('companyName')}
-                    aria-invalid={demoForm.formState.errors.companyName ? 'true' : 'false'}
                   />
-                  {demoForm.formState.errors.companyName && (
-                    <p className="text-sm text-destructive mt-1">{demoForm.formState.errors.companyName.message}</p>
-                  )}
                 </div>
+
 
                 <Button
                   type="submit"
                   size="lg"
-                  disabled={demoForm.formState.isSubmitting}
+                  disabled={isSubmitting}
                   className="w-full bg-business hover:bg-business-dark text-white rounded-xl px-8 py-6 text-lg shadow-medium"
                 >
-                  {demoForm.formState.isSubmitting ? 'Submitting...' : 'Get Free Demo'}
+                  {isSubmitting ? 'Submitting...' : 'Get Free Demo'}
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </div>
