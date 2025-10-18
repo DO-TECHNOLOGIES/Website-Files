@@ -15,28 +15,8 @@ export interface EmailData {
 }
 
 export const sendEmail = async (data: EmailData): Promise<void> => {
-  // Debug logging for production
-  console.log('EmailJS Debug Info:', {
-    SERVICE_ID: SERVICE_ID,
-    TEMPLATE_ID: TEMPLATE_ID,
-    PUBLIC_KEY: PUBLIC_KEY,
-    hasServiceId: !!SERVICE_ID,
-    hasTemplateId: !!TEMPLATE_ID,
-    hasPublicKey: !!PUBLIC_KEY,
-    SERVICE_ID_LENGTH: SERVICE_ID?.length,
-    TEMPLATE_ID_LENGTH: TEMPLATE_ID?.length,
-    PUBLIC_KEY_LENGTH: PUBLIC_KEY?.length,
-    NODE_ENV: import.meta.env.MODE,
-    isProduction: import.meta.env.MODE === 'production'
-  });
-
   // Validate configuration
   if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
-    console.error('EmailJS Configuration Missing:', {
-      SERVICE_ID: SERVICE_ID || 'MISSING',
-      TEMPLATE_ID: TEMPLATE_ID || 'MISSING',
-      PUBLIC_KEY: PUBLIC_KEY || 'MISSING'
-    });
     throw new Error('EmailJS is not configured. Please check your environment variables.');
   }
 
